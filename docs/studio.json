@@ -1,0 +1,128 @@
+{
+  "description": "IVR for creating a Flex voice task",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "trigger",
+      "transitions": [
+        {
+          "event": "incomingMessage"
+        },
+        {
+          "next": "testPrompt",
+          "event": "incomingCall"
+        },
+        {
+          "event": "incomingConversationMessage"
+        },
+        {
+          "event": "incomingRequest"
+        },
+        {
+          "event": "incomingParent"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 0,
+          "y": -10
+        }
+      }
+    },
+    {
+      "name": "SendCallToAgent",
+      "type": "send-to-flex",
+      "transitions": [
+        {
+          "event": "callComplete"
+        },
+        {
+          "event": "failedToEnqueue"
+        },
+        {
+          "event": "callFailure"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 90,
+          "y": 1120
+        },
+        "workflow": "WWeaafb20c1a582426eaf4bcb573cc1302",
+        "channel": "TC74499dd3ab842a202acaa4665fd4f64a",
+        "attributes": "{\n\"name\":\"{{trigger.call.From}}\",\n\"type\":\"inbound\",\n\"customerData\" : { \"name\" : \"Tom Jones\", \n\"memberType\" : \"Gold\", \"email\" : \"tjones@twilio.com\", \"phone\": \"+13035551212\"}\n}"
+      }
+    },
+    {
+      "name": "testPrompt",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "varMain",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "voice": "Polly.Joanna",
+        "offset": {
+          "x": 0,
+          "y": 260
+        },
+        "loop": 1,
+        "say": "This is a test prompt, delete as requried.",
+        "language": "en-US"
+      }
+    },
+    {
+      "name": "redirect_1",
+      "type": "add-twiml-redirect",
+      "transitions": [
+        {
+          "event": "return"
+        },
+        {
+          "event": "timeout"
+        },
+        {
+          "event": "fail"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 460,
+          "y": 240
+        },
+        "method": "POST",
+        "url": "{{flow.variables.websocketUri}}",
+        "timeout": "14400"
+      }
+    },
+    {
+      "name": "varMain",
+      "type": "set-variables",
+      "transitions": [
+        {
+          "next": "redirect_1",
+          "event": "next"
+        }
+      ],
+      "properties": {
+        "variables": [
+          {
+            "type": "string",
+            "value": "https://cfavila.ngrok.io/incoming",
+            "key": "websocketUri"
+          }
+        ],
+        "offset": {
+          "x": 20,
+          "y": 490
+        }
+      }
+    }
+  ],
+  "initial_state": "Trigger",
+  "flags": {
+    "allow_concurrent_calls": true
+  }
+}
