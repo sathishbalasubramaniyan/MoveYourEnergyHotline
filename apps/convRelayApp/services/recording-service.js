@@ -1,4 +1,6 @@
-
+/* eslint-disable semi */
+/* eslint-disable indent */
+/* eslint-disable quotes */
 require('colors');
 require('dotenv').config();
 

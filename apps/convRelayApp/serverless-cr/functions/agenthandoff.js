@@ -1,3 +1,6 @@
+/* eslint-disable semi */
+/* eslint-disable indent */
+/* eslint-disable quotes */
 exports.handler = function(context, event, callback) {
     const VoiceResponse = require('twilio').twiml.VoiceResponse;
 

@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable quotes */
 // helper-functions.js
 // CFA: Added
 
@@ -42,10 +44,12 @@ async function handleLiveAgentHandoff(
     userProfile,
     userInput
   ) {
-    const name = userProfile?.profile?.firstName
-      ? userProfile.profile.firstName
+    const userProfileObj = JSON.parse(userProfile);
+    const name = userProfileObj?.customerProfile?.firstName
+      ? userProfileObj.customerProfile.firstName
       : ""; // Get user's name if available
   
+
     const nameIntroOptions = name
       ? [
           `Sure ${name},`,
@@ -95,7 +99,7 @@ async function handleLiveAgentHandoff(
         reasonCode: "live-agent-handoff",
         reason: "User requested to speak to a live agent.",
         conversationSummary: conversationSummary,
-        customerData: JSON.parse(userProfile)
+        customerData: userProfileObj
       });
     }, 1000); // 1 second delay
   }

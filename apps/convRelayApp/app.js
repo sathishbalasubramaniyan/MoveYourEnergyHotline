@@ -1,3 +1,7 @@
+/* eslint-disable indent */
+/* eslint-disable quotes */
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi */
 require('dotenv').config();
 require('colors');
 require('log-timestamp');
@@ -10,6 +14,7 @@ const { GptService } = require('./services/gpt-service');
 const { TextService } = require('./services/text-service');
 
 //  CFA: Added to support agent handoff
+// eslint-disable-next-line quotes
 const { EndSessionService } = require("./services/end-session-service");
 const { recordingService } = require('./services/recording-service');
 
@@ -44,6 +49,7 @@ let record;
 // Add this code after creating the Express app
 
 app.get('/monitor', (req, res) => {
+  // eslint-disable-next-line no-undef
   res.sendFile(__dirname + '/monitor.html');
 });
 
@@ -86,13 +92,25 @@ app.post('/incoming', async (req, res) => {
     addLog('info', `language : ${record.language}, voice : ${record.voice}`);
     
 
-    const response = 
-    `<Response>
+    // const response = 
+    // `<Response>
+    //   <Connect action="${process.env.CONNECT_ACTION_URI}">
+    //     <ConversationRelay url="wss://${process.env.SERVER}/sockets" dtmfDetection="true" voice="${record.voice}" language="${record.language}" transcriptionProvider="${record.transcriptionProvider}">
+    //       <Language code="fr-FR" ttsProvider="google" voice="fr-FR-Neural2-B" />
+    //       <Language code="es-ES" ttsProvider="google" voice="es-ES-Neural2-B" />
+    //       <Language code="en-GB" ttsProvider="amazon" voice="Olivia-Generative" transcriptionProvider="Deepgram"/>
+    //     </ConversationRelay>
+    //   </Connect>
+    // </Response>`;
+    const response = `<Response>
       <Connect action="${process.env.CONNECT_ACTION_URI}">
-        <ConversationRelay url="wss://${process.env.SERVER}/sockets" dtmfDetection="true" voice="${record.voice}" language="${record.language}" transcriptionProvider="${record.transcriptionProvider}">
-          <Language code="fr-FR" ttsProvider="google" voice="fr-FR-Neural2-B" />
-          <Language code="es-ES" ttsProvider="google" voice="es-ES-Neural2-B" />
-        </ConversationRelay>
+          <ConversationRelay 
+            url="wss://${process.env.SERVER}/sockets" 
+            voice="en-AU-Neural2-A" 
+            dtmfDetection="true" 
+            interruptByDtmf="true" 
+            debug="true"
+          />
       </Connect>
     </Response>`;
     res.type('text/xml');
@@ -137,9 +155,7 @@ app.ws('/sockets', (ws) => {
       
       if (msg.type === 'prompt') {
         addLog('convrelay', `convrelay -> GPT (${msg.lang}) :  ${msg.voicePrompt} `);
-        gptService.completion(msg.voicePrompt, interactionCount);
-        interactionCount += 1;
-
+  
         const trimmedVoicePrompt = msg.voicePrompt.trim()
         const shouldHandoff = await processUserInputForHandoff(trimmedVoicePrompt)
 
@@ -157,9 +173,11 @@ app.ws('/sockets', (ws) => {
             // userProfile,
             record.profile,
             trimmedVoicePrompt
-          )
-          
+          );
+          return;         
         }
+        gptService.completion(msg.voicePrompt, interactionCount);
+        interactionCount += 1;
       } 
       
       if (msg.type === 'interrupt') {

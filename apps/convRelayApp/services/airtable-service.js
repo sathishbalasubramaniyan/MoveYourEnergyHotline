@@ -1,3 +1,6 @@
+/* eslint-disable semi */
+/* eslint-disable indent */
+/* eslint-disable quotes */
 const Airtable = require('airtable');
 require('dotenv').config();
 

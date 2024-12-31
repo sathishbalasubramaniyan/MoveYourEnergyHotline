@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const axios = require('axios');
 
 async function changeLanguage(functionArgs) {

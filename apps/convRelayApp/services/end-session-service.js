@@ -1,5 +1,8 @@
 //  CFA: Added to support agent handoff
 //
+/* eslint-disable semi */
+/* eslint-disable indent */
+/* eslint-disable quotes */
 const EventEmitter = require("events");
 
 class EndSessionService extends EventEmitter {

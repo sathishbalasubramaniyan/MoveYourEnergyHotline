@@ -1,3 +1,6 @@
+/* eslint-disable semi */
+/* eslint-disable indent */
+/* eslint-disable quotes */
 const { Analytics } = require('@segment/analytics-node')
 require('dotenv').config();
 const axios = require('axios');
@@ -56,6 +59,7 @@ function getProfile(id) {
   const username = profileToken;
   const password = '';
   // encode base64
+  // eslint-disable-next-line no-undef
   const credentials = Buffer.from(`${username}:${password}`).toString('base64');
 
   // set headers
@@ -85,6 +89,7 @@ function getEvents(id){
     const username =  profileToken;
     const password = '';
     // encode base64
+    // eslint-disable-next-line no-undef
     const credentials = Buffer.from(`${username}:${password}`).toString('base64');
 
     // set headers

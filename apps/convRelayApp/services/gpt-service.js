@@ -1,3 +1,6 @@
+/* eslint-disable semi */
+/* eslint-disable indent */
+/* eslint-disable quotes */
 require('colors');
 const EventEmitter = require('events');
 const OpenAI = require('openai');

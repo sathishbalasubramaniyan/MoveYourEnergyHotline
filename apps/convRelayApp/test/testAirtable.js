@@ -1,3 +1,6 @@
+/* eslint-disable semi */
+/* eslint-disable indent */
+/* eslint-disable quotes */
 const { getLatestRecord } = require('../services/airtable-service');
 
 async function test() {
