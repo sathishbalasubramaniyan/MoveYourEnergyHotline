@@ -140,7 +140,142 @@ const tools = [
       },
     },
   },
+
+  {
+    type: "function",
+    function: {
+      name: "verifySend",
+      //say: "Sending the code now.",
+      description: "Generates and sends a verification code via SMS to the phone number provided",
+      parameters: {
+        type: "object",
+        properties: {
+          phone: {
+            type: "string",
+            description: "The phone number to send the verification code to"
+          }
+        },
+        required: [
+          "phone"
+        ]
+      }
+    }
+  },
   
+  {
+    type: "function",
+    function: {
+      name: "verifyCode",
+      //say: "Verifying the code.",
+      description: "Verifies a provided code",
+      parameters: {
+        type: "object",
+        properties: {
+          code: {
+            type: "string",
+            description: "The verification code to check, provided by the customer"
+          },
+          phone: {
+            type: "string",
+            description: "The phone number of the customer in the customer profile"
+          },
+          generated_verification_code: {
+            type: "string",
+            description: "The generated verification code to check against"
+          }
+        },
+        required: [
+          "code",
+          "phone",
+          "generated_verification_code"
+        ]
+      }
+    }
+  },
+
+  {
+    type: "function",
+    function: {
+      name: "scheduleMove",
+      say: "One moment, organizing your move now.",
+      description: "Schedules the move for a customer",
+      parameters: {
+        type: "object",
+        properties: {
+          new_address: {
+            type: "string",
+            description: "The new address the customer is moving to"
+          },
+          moving_date: {
+            type: "string",
+            description: "The date the customer is moving to the new address (YYYY-MM-DD). **Convert any relative date expressions to this format based on {{currentDate}}.**"
+          },
+          new_energy_plan_type: {
+            type: "string",
+            enum: ["electricity_and_gas", "electricity_only"],
+            description: "The new energy plan type at the new address"
+          },
+          phone: {
+            type: "string",
+            description: "The phone number of the customer in the customer profile"
+          }
+        },
+        required: [
+          "new_address",
+          "moving_date",
+          "new_energy_plan_type",
+          "phone"
+        ]
+      }
+    }
+  },
+
+  {
+    type: "function",
+    function: {
+      name: "liveAgentHandoff",
+      //say: "One moment, transferring you to a live agent now",
+      description: "Transfers the call to a live agent",
+      parameters: {
+        type: "object",
+        properties: {
+          reason: {
+            type: "string",
+            description: "A brief reason for the transfer"
+          }
+        },
+        required: [
+          "reason"
+        ]
+      }
+    }
+  },
+
+  {
+    type: "function",
+    function: {
+      name: "verifyDOB",
+      //say: "One moment, transferring you to a live agent now",
+      description: "Verifies the customer's date of birth",
+      parameters: {
+        type: "object",
+        properties: {
+          dob_from_customer: {
+            type: "string",
+            description: "The date of birth provided by the customer (YYYY-MM-DD)."
+          },
+          dob_customer_profile: {
+            type: "string",
+            description: "The date of birth in the customer profile"
+          }
+        },
+        required: [
+          "dob_from_customer",
+          "dob_customer_profile"
+        ]
+      }
+    }
+  }
 ];
 
 module.exports = tools;

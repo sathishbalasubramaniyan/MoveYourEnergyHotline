@@ -59,14 +59,6 @@ const ContactCard = (props) => {
                         </Box>
                         <UnorderedList marginBottom="space0" listStyleType="">
                             <ListItem>
-                            <PasteFlex vAlignContent="center">
-                                <StarIcon sx={{ color: '#FFD700', width: '1.25rem', height: '1.25rem' }} />
-                                <Text as={'div'} marginLeft="space30">
-                                {props.task.attributes.customerData.loyaltyTier}
-                                </Text>
-                            </PasteFlex>
-                            </ListItem>
-                            <ListItem>
                             <PasteFlex>
                                 <EmailIcon decorative />
                                 <Text as={'div'} marginLeft="space30">
@@ -79,24 +71,12 @@ const ContactCard = (props) => {
                             <PasteFlex>
                                 <CallIcon decorative />
                                 <Text as={'div'} marginLeft="space30">
-                                {props.task.attributes.customerData.phoneNumber}
+                                {props.task.attributes.customerData.phone}
                                 </Text>
                             </PasteFlex>
                             </ListItem>
                         </UnorderedList>
                         </Column> 
-                        <Column span={12}>
-                        <Separator orientation={'horizontal'} verticalSpacing="space40" />
-                        <Stack orientation={'vertical'} spacing={'space20'}>
-                        <Heading as={'h2'} variant={'heading40'} marginBottom="space0">
-                            Closest Store
-                        </Heading>
-                        <Paragraph marginBottom="space0">{'1234 Happy Canyon Way'}</Paragraph>
-                        <Paragraph marginBottom="space0">
-                            {'Somewhere, CA 80210'}
-                        </Paragraph>
-                        </Stack>                            
-                        </Column>                                 
                     </Grid>
                 </Card>
             </Box>

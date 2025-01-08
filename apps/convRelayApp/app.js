@@ -18,6 +18,8 @@ const { TextService } = require('./services/text-service');
 const { EndSessionService } = require("./services/end-session-service");
 const { recordingService } = require('./services/recording-service');
 
+const { getProfileTraits } = require('./services/segment-service');
+
 // const { prompt, userProfile, orderHistory } = require('./services/prompt');
 
 // Import helper functions
@@ -80,12 +82,23 @@ app.post('/incoming', async (req, res) => {
 
     // Initialize GPT service 
     gptService = new GptService(record.model);
+
+    let prompt = record.sys_prompt;
+
+    const currentDate = new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    prompt = prompt.replace("{{currentDate}}", currentDate);
     
-    gptService.userContext.push({ 'role': 'system', 'content': record.sys_prompt });
-    gptService.userContext.push({ 'role': 'system', 'content': record.profile });
-    gptService.userContext.push({ 'role': 'system', 'content': record.orders });
-    gptService.userContext.push({ 'role': 'system', 'content': record.inventory });
-    gptService.userContext.push({ 'role': 'system', 'content': record.example });
+    gptService.userContext.push({ 'role': 'system', 'content': prompt });
+    //gptService.userContext.push({ 'role': 'system', 'content': record.profile });
+    //gptService.userContext.push({ 'role': 'system', 'content': record.orders });
+    //gptService.userContext.push({ 'role': 'system', 'content': record.inventory });
+    //gptService.userContext.push({ 'role': 'system', 'content': record.example });
     gptService.userContext.push({ 'role': 'system', 'content': `You can speak in many languages, but use default language ${record.language} for this conversation from now on! Remember it as the default language, even you change language in between. treat en-US and en-GB etc. as different languages.`});
     
 
@@ -132,6 +145,7 @@ app.ws('/sockets', (ws) => {
     endSessionService = new EndSessionService(ws)
 
     let interactionCount = 0;
+    let dtmfDigits = '';
     
     // Incoming from MediaStream
     ws.on('message', async function message(data) {
@@ -140,7 +154,17 @@ app.ws('/sockets', (ws) => {
       if (msg.type === 'setup') {
         addLog('convrelay', `convrelay socket setup ${msg.callSid}`);
         callSid = msg.callSid;        
-        gptService.setCallInfo('user phone number', msg.from);
+        gptService.setCallInfo('customer phone number', msg.from);
+
+        gptService.setTextService(textService);
+        gptService.setEndSessionService(endSessionService);
+        const userId = msg.from.substring(1);
+        const profileTraits = await getProfileTraits(userId);
+        const profile = {};
+        profile.customerProfile = profileTraits;
+        gptService.setUserProfile(profile);
+
+        gptService.userContext.push({ 'role': 'system', 'content': JSON.stringify(profile) });
 
         //trigger gpt to start 
         gptService.completion('hello', interactionCount);
@@ -157,25 +181,25 @@ app.ws('/sockets', (ws) => {
         addLog('convrelay', `convrelay -> GPT (${msg.lang}) :  ${msg.voicePrompt} `);
   
         const trimmedVoicePrompt = msg.voicePrompt.trim()
-        const shouldHandoff = await processUserInputForHandoff(trimmedVoicePrompt)
+        //const shouldHandoff = await processUserInputForHandoff(trimmedVoicePrompt)
 
-        addLog('convrelay', `convrelay -> should handoff: (${trimmedVoicePrompt} : ${shouldHandoff})`)
+        //addLog('convrelay', `convrelay -> should handoff: (${trimmedVoicePrompt} : ${shouldHandoff})`)
 
         // CFA: Added to support agent handoff
         //  lines: 153 - 163
         //
         // live agent handoff
-        if (shouldHandoff) {
-          handleLiveAgentHandoff(
-            gptService,
-            endSessionService,
-            textService,
-            // userProfile,
-            record.profile,
-            trimmedVoicePrompt
-          );
-          return;         
-        }
+        // if (shouldHandoff) {
+        //   handleLiveAgentHandoff(
+        //     gptService,
+        //     endSessionService,
+        //     textService,
+        //     // userProfile,
+        //     record.profile,
+        //     trimmedVoicePrompt
+        //   );
+        //   return;         
+        // }
         gptService.completion(msg.voicePrompt, interactionCount);
         interactionCount += 1;
       } 
@@ -194,8 +218,14 @@ app.ws('/sockets', (ws) => {
 
       if (msg.type === 'dtmf') {
         addLog('convrelay', 'convrelay dtmf: ' + msg.digit);
+        dtmfDigits = `${dtmfDigits}${msg.digit}`
+        if (dtmfDigits.length === 4) {
+          gptService.completion(dtmfDigits, interactionCount);
+          interactionCount += 1;
+          dtmfDigits = '';
+        }
         
-        console.log('Todo: add dtmf handling');
+        //console.log('Todo: add dtmf handling');
       }
 
     });

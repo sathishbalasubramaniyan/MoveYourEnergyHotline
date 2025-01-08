@@ -30,10 +30,14 @@ class GptService extends EventEmitter {
       // { 'role': 'system', 'content': prompt },
       // { 'role': 'system', 'content': userProfile },
       // { 'role': 'system', 'content': 'You should speak English as default, and forget previous conversations' },
-      { 'role': 'assistant', 'content': 'Hello! Welcome to Owl Shoes, how can i help you today' },
+      { 'role': 'assistant', 'content': 'Hello! Welcome to move your Owl Energy hotline, how can i help you today' },
     ],
     this.partialResponseIndex = 0;
     this.isInterrupted = false;
+
+    this.userProfile = null;
+    this.textService = null;
+    this.endSessionService = null;
 
     console.log(`GptService init with model: ${this.model}`);
   }
@@ -43,6 +47,18 @@ class GptService extends EventEmitter {
   setCallInfo (info, value) {
     console.log('setCallInfo', info, value);
     this.userContext.push({ 'role': 'user', 'content': `${info}: ${value}` });
+  }
+
+  setUserProfile(userProfile) {
+    this.userProfile = userProfile;
+  }
+
+  setTextService(textService) {
+    this.textService = textService;
+  }
+
+  setEndSessionService(endSessionService) {
+    this.endSessionService = endSessionService;
   }
 
   interrupt () {
@@ -145,6 +161,15 @@ class GptService extends EventEmitter {
         const say = toolData.function.say;
 
         this.emit('gptreply', say, false, interactionCount);
+
+        if (functionName === "liveAgentHandoff") {
+          validatedArgs.gptService = this;
+          validatedArgs.endSessionService = this.endSessionService;
+          validatedArgs.textService = this.textService;
+          validatedArgs.userProfile = this.userProfile;
+          functionToCall(validatedArgs);
+          break;
+        }
 
         let functionResponse = await functionToCall(validatedArgs);
 
