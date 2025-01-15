@@ -17,13 +17,28 @@ async function verifyCode(functionArgs) {
   const client = twilio(accountSid, authToken);
   
   //Temp hack. To replace later with Twilio Verify code verification.
-  if (code === generatedCode) {
-    console.log(`[VerifyCode] Verification status success`);
-    return JSON.stringify({verification_status: "success"});
-  } else {
-    console.log(`[VerifyCode] Verification status failed`);
-    return JSON.stringify({verification_status: "failed"});
-  }
+   if (code === generatedCode) {
+     console.log(`[VerifyCode] Verification status success`);
+     return JSON.stringify({verification_status: "success"});
+   } else {
+     console.log(`[VerifyCode] Verification status failed`);
+     return JSON.stringify({verification_status: "failed"});
+   }
+
+//   const verificationCheck = await client.verify.v2
+//     .services("VAaafecd05115fc6a172efd811441590e7")
+//     .verificationChecks.create({
+//       code: code,
+//       to: phone
+//     });
+
+//   if (verificationCheck.status === "approved") {
+//     console.log(`[VerifyCode] Verification status success`);
+//     return JSON.stringify({verification_status: "success"});
+//   } else {
+//     console.log(`[VerifyCode] Verification status failed`);
+//     return JSON.stringify({verification_status: "failed"});
+//   }
 }
 
 module.exports = verifyCode;

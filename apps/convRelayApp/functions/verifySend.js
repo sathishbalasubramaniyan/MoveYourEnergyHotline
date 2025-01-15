@@ -12,6 +12,8 @@ async function verifySend(functionArgs) {
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const client = twilio(accountSid, authToken);
   
+  
+  // code block for Verify simulation using SMS for testing with dev phone, as dev phone cannot receive Verify OTPs
   //let code = "8591"; // Temp hack to avoid filtering, as I am using a Twilio number with dev phone as the from number for testing.
 
   const min = 1000;
@@ -30,6 +32,18 @@ async function verifySend(functionArgs) {
   console.log(`[VerifySend] Verification code sent successfully`);
 
   return `Verification code sent successfully and the generated verification code is ${code}`;
+
+  // Verify code block when testing with a real phone
+
+  // const verification = await client.verify.v2
+  //   .services("VAaafecd05115fc6a172efd811441590e7")
+  //   .verifications.create({
+  //     channel: "sms",
+  //     to: phone
+  //   });
+
+  // console.log(`[VerifySend] Verification code sent successfully`);
+  // return `Verification code sent successfully`;
 }
 
 module.exports = verifySend;

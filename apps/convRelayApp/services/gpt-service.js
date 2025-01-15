@@ -147,6 +147,9 @@ class GptService extends EventEmitter {
         collectToolInformation(deltas);
       }
 
+      console.log("finishReason:" , finishReason);
+      //console.log("functionArgs have both { and }", ((functionArgs.indexOf('{') > -1) && (functionArgs.indexOf('}') > -1)));
+
       // need to call function on behalf of Chat GPT with the arguments it parsed from the conversation
       if (finishReason === 'tool_calls') {
         // parse JSON string of args into JSON object
