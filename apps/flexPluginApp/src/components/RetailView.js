@@ -50,7 +50,6 @@ const RetailView = (props) => {
             <Tabs baseId="retail-tabs">
                 <TabList aria-label="details-tab">
                     <Tab>Details</Tab>                 
-                    <Tab>CRM</Tab>
                 </TabList>
 
                 <TabPanels>
@@ -58,8 +57,7 @@ const RetailView = (props) => {
                     <TabPanel>
 
                         <Grid gutter="space30">
-                                <Column span={4}><ContactCard /></Column>
-
+                                
                                 <Column span={10}>
                                     <div style={styles.convSummary}>
                                     <ConversationSummary />
@@ -69,16 +67,7 @@ const RetailView = (props) => {
                                 </Column>                                
                         </Grid>
                         <Separator orientation={'horizontal'} verticalSpacing="space40" />
-                    </TabPanel>
-                    <TabPanel>
-                        <Grid gutter="space30">
-                            <Column span={12}>
-                                <h1>Implement a CRM iFrame here</h1>
-                                <CustomView_Crm />
-
-                            </Column>
-                        </Grid>
-                    </TabPanel>
+                    </TabPanel>                    
                 </TabPanels>
 
             </Tabs>

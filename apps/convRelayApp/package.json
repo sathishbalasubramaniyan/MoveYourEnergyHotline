@@ -24,6 +24,7 @@
     "openai": "^4.20.1",
     "segment": "^0.1.3",
     "twilio": "^4.19.3",
+    "twilio-sync": "^3.3.5",
     "uuid": "^9.0.1",
     "wavefile": "^11.0.0"
   },

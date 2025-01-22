@@ -119,9 +119,9 @@ app.post('/incoming', async (req, res) => {
       <Connect action="${process.env.CONNECT_ACTION_URI}">
           <ConversationRelay 
             url="wss://${process.env.SERVER}/sockets" 
-            voice="en-AU-Neural2-A" 
+            voice="en-US-Journey-O" 
             dtmfDetection="true" 
-            interruptByDtmf="true" 
+            interruptByDtmf="true"
             debug="true"
           />
       </Connect>
@@ -159,11 +159,12 @@ app.ws('/sockets', (ws) => {
         gptService.setTextService(textService);
         gptService.setEndSessionService(endSessionService);
         const userId = msg.from.substring(1);
+        //const userId = msg.from;
         const profileTraits = await getProfileTraits(userId);
         const profile = {};
         profile.customerProfile = profileTraits;
         gptService.setUserProfile(profile);
-
+        //gptService.setCallInfo('customer phone number', profileTraits.phone);
         gptService.userContext.push({ 'role': 'system', 'content': JSON.stringify(profile) });
 
         //trigger gpt to start 

@@ -30,7 +30,7 @@ class GptService extends EventEmitter {
       // { 'role': 'system', 'content': prompt },
       // { 'role': 'system', 'content': userProfile },
       // { 'role': 'system', 'content': 'You should speak English as default, and forget previous conversations' },
-      { 'role': 'assistant', 'content': 'Hello! Welcome to move your Owl Energy hotline, how can i help you today' },
+      //{ 'role': 'assistant', 'content': 'Hello! Welcome to move your Owl Energy hotline, how can i help you today' },
     ],
     this.partialResponseIndex = 0;
     this.isInterrupted = false;
@@ -84,6 +84,10 @@ class GptService extends EventEmitter {
     } else {
       this.userContext.push({ 'role': role, 'content': text });
     }
+  }
+
+  getUserContext() {
+    return this.userContext;
   }
 
     // Summarize conversation
@@ -162,14 +166,17 @@ class GptService extends EventEmitter {
         // before running the function.
         const toolData = tools.find(tool => tool.function.name === functionName);
         const say = toolData.function.say;
-
-        this.emit('gptreply', say, false, interactionCount);
-
+        if (say) {
+          this.userContext.push({'role': 'assistant', 'content': say});
+          this.emit('gptreply', say, false, interactionCount);
+        }        
+        
         if (functionName === "liveAgentHandoff") {
+          this.userContext.push({'role': 'assistant', 'content': completeResponse});
           validatedArgs.gptService = this;
           validatedArgs.endSessionService = this.endSessionService;
           validatedArgs.textService = this.textService;
-          validatedArgs.userProfile = this.userProfile;
+          validatedArgs.userProfile = this.userProfile;          
           functionToCall(validatedArgs);
           break;
         }

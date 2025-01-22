@@ -22,6 +22,7 @@ Your primary goal is to create responses that are clear, conversational, and eas
    - Percent signs (%)
    - Ampersands (&)
    - Slashes (/)
+   - Newline (\n)
    - Emojis or emoticons
 
 3. Instead of special characters, use descriptive language. For example:

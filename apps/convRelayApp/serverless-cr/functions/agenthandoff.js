@@ -38,7 +38,7 @@ exports.handler = function(context, event, callback) {
         reasonCode: parsedHandoffData.reasonCode || "No reason code",
         conversationSummary: parsedHandoffData.conversationSummary || "No conversation summary",
         customerData: parsedHandoffData.customerData.customerProfile || "No customer Data",
-        escalation_type: parsedHandoffData.conversationSummary || "No conversation summary",
+        escalation_type: parsedHandoffData.conversationSummary || "No conversation summary"
         // You can add more fields if needed from parsedHandoffData
     };
 
