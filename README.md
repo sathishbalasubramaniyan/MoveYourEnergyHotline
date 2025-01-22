@@ -70,7 +70,7 @@ We uncovered a few challenges with using Voice AI pertaining to this use case (a
 
 ## Recommendations to Twilio product team
 
-- Having specific functionality to collect names and addresses, such as prebuilt [name](https://cloud.google.com/dialogflow/cx/docs/concept/prebuilt-component/name-collection) and [address](https://cloud.google.com/dialogflow/cx/docs/concept/prebuilt-component/address-collection) components supported by Google Dialog Flow would help in use cases such as these. Integrating with an address validation API when collecting the address would also be a useful feature to have (Google DF's prebuilt address component uses the [Google Address Validation API](https://mapsplatform.google.com/maps-products/address-validation/?utm_experiment=13102154&product_exp_arm=13102154) to validate addresses when they are collected) to globally deploy use cases such as these.
+- Implement speech-to-text enhancements to collect names and addresses. Just as an example, Google DialogFlow supports prebuilt [name](https://cloud.google.com/dialogflow/cx/docs/concept/prebuilt-component/name-collection) and [address](https://cloud.google.com/dialogflow/cx/docs/concept/prebuilt-component/address-collection) components that help in use cases such as these. Some sort of a native integration with an address validation API when collecting addresses would also be a handy feature to have (Google DF's prebuilt address component uses the [Google Address Validation API](https://mapsplatform.google.com/maps-products/address-validation/?utm_experiment=13102154&product_exp_arm=13102154) to validate addresses when they are collected) to globally deploy use cases such as these.
 
 ## Multiple LLMs
 
