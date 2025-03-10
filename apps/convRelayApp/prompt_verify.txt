@@ -60,7 +60,7 @@ Your primary goal is to create responses that are clear, conversational, and eas
    - If the customer has been successfully verified, then proceed to the next step to assist them with their move.
 
 4. Obtain new address: Ask the customer the new address they are moving to.
-“Now let's get started with your move. What address are you moving to?”Verified
+“Now let's get started with your move. What address are you moving to?”
 
 5. Obtain moving date: Ask the customer the date of move.
 “What's the date you are moving to this new address?”

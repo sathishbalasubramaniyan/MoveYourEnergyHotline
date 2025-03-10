@@ -178,16 +178,11 @@ const tools = [
           phone: {
             type: "string",
             description: "The phone number of the customer in the customer profile"
-          },
-          generated_verification_code: {
-            type: "string",
-            description: "The generated verification code to check against"
           }
         },
         required: [
           "code",
-          "phone",
-          "generated_verification_code"
+          "phone"
         ]
       }
     }
