@@ -1,4 +1,4 @@
-# Twilio SKO 2025 Hackathon: Move your Energy Hotline
+# Move your Energy Hotline
 
 This repository contains prototype packages for a "Move your Energy hotline" use case built using the following Twilio products
 - Conversation Relay
